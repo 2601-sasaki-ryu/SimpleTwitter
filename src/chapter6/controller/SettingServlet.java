@@ -65,9 +65,10 @@ public class SettingServlet extends HttpServlet {
         List<String> errorMessages = new ArrayList<String>();
 
         User user = getUser(request);
+
         if (isValid(user, errorMessages)) {
             try {
-                new UserService().update(user);
+            	new UserService().update(user);
             } catch (NoRowsUpdatedRuntimeException e) {
             	log.warning("他の人によって更新されています。最新のデータを表示しました。データを確認してください。");
                 errorMessages.add("他の人によって更新されています。最新のデータを表示しました。データを確認してください。");
@@ -110,7 +111,7 @@ public class SettingServlet extends HttpServlet {
         String password = user.getPassword();
         String email = user.getEmail();
 
-        if (!StringUtils.isEmpty(name) && (20 < name.length())) {
+        if (!StringUtils.isEmpty(name) && (	20 < name.length())) {
         	errorMessages.add("名前は20文字以下で入力してください");
         }
 
@@ -120,9 +121,9 @@ public class SettingServlet extends HttpServlet {
         	errorMessages.add("アカウント名は20文字以下で入力してください");
         }
 
-        if (StringUtils.isEmpty(password)) {
-            errorMessages.add("パスワードを入力してください");
-        }
+        //if (StringUtils.isEmpty(password)) {
+        //    errorMessages.add("パスワードを入力してください");
+        //}
 
         if (StringUtils.isEmpty(email)) {
         	errorMessages.add("メールアドレスを入力してください");

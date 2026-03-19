@@ -174,36 +174,73 @@ public class UserDao {
         " : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
     	PreparedStatement ps = null;
-        try {
-        	StringBuilder sql = new StringBuilder();
-            sql.append("UPDATE users SET ");
-            sql.append("    account = ?, ");
-            sql.append("    name = ?, ");
-            sql.append("    email = ?, ");
-            sql.append("    password = ?, ");
-            sql.append("    description = ?, ");
-            sql.append("    updated_date = CURRENT_TIMESTAMP ");
-            sql.append("WHERE id = ?");
+    	//ここでpwあるときとないときで分けたい
+    	//&& !user.getPassword().isEmpty()も追加pwが""で登録されてしまう
+    	if(user.getPassword() != null && !user.getPassword().isEmpty()) {
+    		try {
+    			StringBuilder sql = new StringBuilder();
+    			sql.append("UPDATE users SET ");
+    			sql.append("    account = ?, ");
+    			sql.append("    name = ?, ");
+    			sql.append("    email = ?, ");
+    			sql.append("    password = ?, ");
+    			sql.append("    description = ?, ");
+    			sql.append("    updated_date = CURRENT_TIMESTAMP ");
+    			sql.append("WHERE id = ?");
 
-            ps = connection.prepareStatement(sql.toString());
+    			ps = connection.prepareStatement(sql.toString());
 
-            ps.setString(1, user.getAccount());
-            ps.setString(2, user.getName());
-            ps.setString(3, user.getEmail());
-            ps.setString(4, user.getPassword());
-            ps.setString(5, user.getDescription());
-            ps.setInt(6, user.getId());
+    			ps.setString(1, user.getAccount());
+    			ps.setString(2, user.getName());
+    			ps.setString(3, user.getEmail());
+    			ps.setString(4, user.getPassword());
+    			ps.setString(5, user.getDescription());
+    			ps.setInt(6, user.getId());
 
-            int count = ps.executeUpdate();
-            if (count == 0) {
-            	log.log(Level.SEVERE,"更新対象のレコードが存在しません", new NoRowsUpdatedRuntimeException());
-                throw new NoRowsUpdatedRuntimeException();
+    			int count = ps.executeUpdate();
+                if (count == 0) {
+                	log.log(Level.SEVERE,"更新対象のレコードが存在しません", new NoRowsUpdatedRuntimeException());
+                    throw new NoRowsUpdatedRuntimeException();
+                }
+            } catch (SQLException e) {
+            	log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+            	throw new SQLRuntimeException(e);
+            } finally {
+            	close(ps);
             }
-        } catch (SQLException e) {
-        	log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
-        	throw new SQLRuntimeException(e);
-        } finally {
-        	close(ps);
-        }
+    	}else {
+    		try {
+    			StringBuilder sql = new StringBuilder();
+    			sql.append("UPDATE users SET ");
+    			sql.append("    account = ?, ");
+    			sql.append("    name = ?, ");
+    			sql.append("    email = ?, ");
+    			//sql.append("    password = ?, ");を削除
+    			sql.append("    description = ?, ");
+    			sql.append("    updated_date = CURRENT_TIMESTAMP ");
+    			sql.append("WHERE id = ?");
+
+    			ps = connection.prepareStatement(sql.toString());
+
+    			ps.setString(1, user.getAccount());
+    			ps.setString(2, user.getName());
+    			ps.setString(3, user.getEmail());
+    			//ps.setString(4, user.getPassword());を消す、以降の順番繰り上げ
+    			ps.setString(4, user.getDescription());
+    			ps.setInt(5, user.getId());
+
+    			int count = ps.executeUpdate();
+                if (count == 0) {
+                	log.log(Level.SEVERE,"更新対象のレコードが存在しません", new NoRowsUpdatedRuntimeException());
+                    throw new NoRowsUpdatedRuntimeException();
+                }
+    		}catch (SQLException e) {
+            	log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+            	throw new SQLRuntimeException(e);
+            } finally {
+            	close(ps);
+            }
+
+    	}
     }
 }

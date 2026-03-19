@@ -116,9 +116,14 @@ public class UserService {
         Connection connection = null;
         try {
         	// パスワード暗号化
-            String encPassword = CipherUtil.encrypt(user.getPassword());
+            //ここにif分岐をし、パスワードある場合に暗号化→DBへ渡す
+        	//無ければnullで渡して、DAO→DBへ更新させない
+        if(user.getPassword() != null && !user.getPassword().isEmpty()) {
+        	String encPassword = CipherUtil.encrypt(user.getPassword());
             user.setPassword(encPassword);
-
+        }else {
+        	user.setPassword(null);
+        }
             connection = getConnection();
             new UserDao().update(connection, user);
             commit(connection);
