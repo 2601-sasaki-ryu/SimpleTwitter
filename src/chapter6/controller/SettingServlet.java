@@ -111,7 +111,7 @@ public class SettingServlet extends HttpServlet {
         String password = user.getPassword();
         String email = user.getEmail();
 
-        if (!StringUtils.isEmpty(name) && (	20 < name.length())) {
+        if (!StringUtils.isEmpty(name) && (20 < name.length())) {
         	errorMessages.add("名前は20文字以下で入力してください");
         }
 
