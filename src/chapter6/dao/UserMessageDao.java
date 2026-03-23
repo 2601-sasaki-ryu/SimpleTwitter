@@ -52,7 +52,7 @@ public class UserMessageDao {
             sql.append("ON messages.user_id = users.id ");
 
             if(userId != null) {
-            	sql.append("WHERE messages.user_id = ? ");
+            	sql.append("WHERE user_id = ? ");
             }
 
             sql.append("ORDER BY created_date DESC limit " + num);
