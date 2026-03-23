@@ -120,10 +120,10 @@ public class UserService {
         	// パスワード暗号化
             //ここにif分岐をし、パスワードある場合に暗号化→DBへ渡す
         	//無ければnullで渡して、DAO→DBへ更新させない
-        if(!StringUtils.isBlank(user.getPassword())) {
-        	String encPassword = CipherUtil.encrypt(user.getPassword());
-            user.setPassword(encPassword);
-        }
+        	if(!StringUtils.isBlank(user.getPassword())) {
+            	String encPassword = CipherUtil.encrypt(user.getPassword());
+                user.setPassword(encPassword);
+            }
 
             connection = getConnection();
             new UserDao().update(connection, user);
