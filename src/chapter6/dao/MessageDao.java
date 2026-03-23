@@ -50,6 +50,7 @@ public class MessageDao {
             sql.append("    CURRENT_TIMESTAMP ");   // updated_date
             sql.append(")");
 
+
             ps = connection.prepareStatement(sql.toString());
 
             ps.setInt(1, message.getUserId());

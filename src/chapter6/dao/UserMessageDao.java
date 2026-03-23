@@ -32,7 +32,7 @@ public class UserMessageDao {
 
     }
 
-    public List<UserMessage> select(Connection connection, int num) {
+    public List<UserMessage> select(Connection connection, Integer userId, int num) {
 
 	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
         " : " + new Object(){}.getClass().getEnclosingMethod().getName());
@@ -49,10 +49,22 @@ public class UserMessageDao {
             sql.append("    messages.created_date as created_date ");
             sql.append("FROM messages ");
             sql.append("INNER JOIN users ");
-            sql.append("ON messages.user_id = users.id ");
+            sql.append("ON messages.user_id = users.id ")	;
+
+            //* idがnullだったら全件取得するselect from →where userId = ～で絞りたい
+            //* idがnull以外だったら、その値に対応するユーザーIDの投稿を取得する
+            if(userId != null) {
+            	sql.append("WHERE messages.user_id = ? ");
+            }
+
             sql.append("ORDER BY created_date DESC limit " + num);
 
             ps = connection.prepareStatement(sql.toString());
+
+            if (userId != null) {
+                // WHEREの「?」が1だけなので、1番目にセット
+                ps.setInt(1, userId);
+            }
 
             ResultSet rs = ps.executeQuery();
 
