@@ -18,8 +18,6 @@ import chapter6.exception.NoRowsUpdatedRuntimeException;
 import chapter6.exception.SQLRuntimeException;
 import chapter6.logging.InitApplication;
 
-
-
 public class UserDao {
 
 	/**

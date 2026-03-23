@@ -14,7 +14,6 @@ import chapter6.logging.InitApplication;
 
 public class MessageDao {
 
-
     /**
     * ロガーインスタンスの生成
     */
@@ -49,7 +48,6 @@ public class MessageDao {
             sql.append("    CURRENT_TIMESTAMP, ");  // created_date
             sql.append("    CURRENT_TIMESTAMP ");   // updated_date
             sql.append(")");
-
 
             ps = connection.prepareStatement(sql.toString());
 
