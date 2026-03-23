@@ -17,51 +17,50 @@
                 <a href="login">ログイン</a>
                 <a href="signup">登録する</a>
             	</c:if>
-   					<c:if test="${ not empty loginUser }">
+   				<c:if test="${ not empty loginUser }">
         			<a href="./">ホーム</a>
         			<a href="setting">設定</a>
         			<a href="logout">ログアウト</a>
         		</c:if>
             </div>
-		<c:if test="${ not empty loginUser }">
-    		<div class="profile">
-        		<div class="name"><h2><c:out value="${loginUser.name}" /></h2></div>
-        		<div class="account">@<c:out value="${loginUser.account}" /></div>
-        		<div class="description"><c:out value="${loginUser.description}" /></div>
-			</div>
-		</c:if>
-		<c:if test="${ not empty errorMessages }">
-    		<div class="errorMessages">
-    			<ul>
-        			<c:forEach items="${errorMessages}" var="errorMessage">
-                		<li><c:out value="${errorMessage}" />
-            		</c:forEach>
-        		</ul>
-    		</div>
-    		<c:remove var="errorMessages" scope="session" />
-		</c:if>
+			<c:if test="${ not empty loginUser }">
+    			<div class="profile">
+        			<div class="name"><h2><c:out value="${loginUser.name}" /></h2></div>
+        			<div class="account">@<c:out value="${loginUser.account}" /></div>
+        			<div class="description"><c:out value="${loginUser.description}" /></div>
+				</div>
+			</c:if>
+			<c:if test="${ not empty errorMessages }">
+    			<div class="errorMessages">
+    				<ul>
+        				<c:forEach items="${errorMessages}" var="errorMessage">
+        	        		<li><c:out value="${errorMessage}" />
+        	    		</c:forEach>
+        			</ul>
+    			</div>
+    			<c:remove var="errorMessages" scope="session" />
+			</c:if>
 
-		<div class="form-area">
-    		<c:if test="${ isShowMessageForm }">
-        		<form action="message" method="post">
-            		いま、どうしてる？<br />
-            		<textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
-            		<br />
-            		<input type="submit" value="つぶやく">（140文字まで）
-        		</form>
-    		</c:if>
-		</div>
-        <div class="copyright"> Copyright(c)RyuSasaki</div>
+			<div class="form-area">
+	    		<c:if test="${ isShowMessageForm }">
+	        		<form action="message" method="post">
+	            		いま、どうしてる？<br />
+	            		<textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
+	            		<br />
+	            		<input type="submit" value="つぶやく">（140文字まで）
+	        		</form>
+	    		</c:if>
+			</div>
+        	<div class="copyright"> Copyright(c)RyuSasaki</div>
     	</div>
     	<div class="messages">
     		<c:forEach items="${messages}" var="message">
         		<div class="message">
             		<div class="account-name">
-                		<%--//変更前<span class="account"><c:out value="${message.account}" /></span>--%>
                 		<span class="account">
     						<a href="./?user_id=<c:out value="${message.userId}"/>">
         						<c:out value="${message.account}"/>
-   							 </a>
+        					</a>
 						</span>
                 		<span class="name"><c:out value="${message.name}" /></span>
         			</div>
