@@ -11,10 +11,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
+
 import chapter6.beans.User;
 import chapter6.exception.NoRowsUpdatedRuntimeException;
 import chapter6.exception.SQLRuntimeException;
 import chapter6.logging.InitApplication;
+
+
 
 public class UserDao {
 
@@ -174,28 +178,36 @@ public class UserDao {
         " : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
     	PreparedStatement ps = null;
-    	//ここでpwあるときとないときで分けたい
-    	//&& !user.getPassword().isEmpty()も追加pwが""で登録されてしまう
-    	if(user.getPassword() != null && !user.getPassword().isEmpty()) {
+
+    	boolean updatePassword = !StringUtils.isBlank(user.getPassword());
+
     		try {
     			StringBuilder sql = new StringBuilder();
     			sql.append("UPDATE users SET ");
     			sql.append("    account = ?, ");
     			sql.append("    name = ?, ");
     			sql.append("    email = ?, ");
-    			sql.append("    password = ?, ");
+
+    			if(updatePassword) {
+    				sql.append("    password = ?, ");
+    		    }
     			sql.append("    description = ?, ");
     			sql.append("    updated_date = CURRENT_TIMESTAMP ");
     			sql.append("WHERE id = ?");
 
     			ps = connection.prepareStatement(sql.toString());
 
-    			ps.setString(1, user.getAccount());
-    			ps.setString(2, user.getName());
-    			ps.setString(3, user.getEmail());
-    			ps.setString(4, user.getPassword());
-    			ps.setString(5, user.getDescription());
-    			ps.setInt(6, user.getId());
+    			int i = 1;
+    			ps.setString(i++, user.getAccount());
+    			ps.setString(i++, user.getName());
+    			ps.setString(i++, user.getEmail());
+
+    			if(updatePassword) {
+    				ps.setString(i++, user.getPassword());
+    			}
+
+    			ps.setString(i++, user.getDescription());
+    			ps.setInt(i++, user.getId());
 
     			int count = ps.executeUpdate();
                 if (count == 0) {
@@ -208,39 +220,6 @@ public class UserDao {
             } finally {
             	close(ps);
             }
-    	}else {
-    		try {
-    			StringBuilder sql = new StringBuilder();
-    			sql.append("UPDATE users SET ");
-    			sql.append("    account = ?, ");
-    			sql.append("    name = ?, ");
-    			sql.append("    email = ?, ");
-    			//sql.append("    password = ?, ");を削除
-    			sql.append("    description = ?, ");
-    			sql.append("    updated_date = CURRENT_TIMESTAMP ");
-    			sql.append("WHERE id = ?");
 
-    			ps = connection.prepareStatement(sql.toString());
-
-    			ps.setString(1, user.getAccount());
-    			ps.setString(2, user.getName());
-    			ps.setString(3, user.getEmail());
-    			//ps.setString(4, user.getPassword());を消す、以降の順番繰り上げ
-    			ps.setString(4, user.getDescription());
-    			ps.setInt(5, user.getId());
-
-    			int count = ps.executeUpdate();
-                if (count == 0) {
-                	log.log(Level.SEVERE,"更新対象のレコードが存在しません", new NoRowsUpdatedRuntimeException());
-                    throw new NoRowsUpdatedRuntimeException();
-                }
-    		}catch (SQLException e) {
-            	log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
-            	throw new SQLRuntimeException(e);
-            } finally {
-            	close(ps);
-            }
-
-    	}
     }
 }

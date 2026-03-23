@@ -121,10 +121,6 @@ public class SettingServlet extends HttpServlet {
         	errorMessages.add("アカウント名は20文字以下で入力してください");
         }
 
-        //if (StringUtils.isEmpty(password)) {
-        //    errorMessages.add("パスワードを入力してください");
-        //}
-
         if (StringUtils.isEmpty(email)) {
         	errorMessages.add("メールアドレスを入力してください");
         } else if (!StringUtils.isEmpty(email) && (50 < email.length())) {
@@ -134,6 +130,6 @@ public class SettingServlet extends HttpServlet {
         if (errorMessages.size() != 0) {
         	return false;
         }
-        	return true;
+        return true;
     }
 }
