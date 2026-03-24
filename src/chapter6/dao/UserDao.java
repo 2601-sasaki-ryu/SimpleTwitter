@@ -242,7 +242,7 @@ public class UserDao {
                 return users.get(0);
             }
         } catch (SQLException e) {
-            throw new SQLRuntimeException(e);
+        	throw new SQLRuntimeException(e);
         } finally {
             close(ps);
         }
