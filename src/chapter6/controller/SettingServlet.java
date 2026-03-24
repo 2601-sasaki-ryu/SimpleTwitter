@@ -128,7 +128,6 @@ public class SettingServlet extends HttpServlet {
 			}
         }
 
-
         if (StringUtils.isEmpty(email)) {
         	errorMessages.add("メールアドレスを入力してください");
         } else if (!StringUtils.isEmpty(email) && (50 < email.length())) {

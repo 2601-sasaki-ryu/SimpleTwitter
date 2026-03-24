@@ -105,7 +105,6 @@ public class SignUpServlet extends HttpServlet {
         		errorMessages.add("すでに存在するアカウントです");
         	}
 
-
         if (StringUtils.isEmpty(password)) {
             errorMessages.add("パスワードを入力してください");
         }
