@@ -102,7 +102,7 @@ public class SignUpServlet extends HttpServlet {
         }
 
         if(duplicateUser != null) {
-        		errorMessages.add("すでに存在するアカウントです");
+        	errorMessages.add("すでに存在するアカウントです");
         	}
 
         if (StringUtils.isEmpty(password)) {
