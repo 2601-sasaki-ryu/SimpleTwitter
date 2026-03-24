@@ -82,8 +82,8 @@ public class SignUpServlet extends HttpServlet {
 
     private boolean isValid(User user, List<String> errorMessages) {
 
-	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
-        " : " + new Object(){}.getClass().getEnclosingMethod().getName());
+    	log.info(new Object(){}.getClass().getEnclosingClass().getName() +
+		" : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
         String name = user.getName();
         String account = user.getAccount();
