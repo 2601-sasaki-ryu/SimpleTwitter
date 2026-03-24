@@ -122,9 +122,6 @@ public class SettingServlet extends HttpServlet {
         	errorMessages.add("アカウント名は20文字以下で入力してください");
         }
 
-        if (duplicateUser == null)
-        	return true; // 誰もいなければOKで終了
-
         if (duplicateUser != null && duplicateUser.getId() != user.getId()) {
             errorMessages.add("すでに存在するアカウント名です");
         }
