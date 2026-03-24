@@ -68,7 +68,6 @@ public class SignUpServlet extends HttpServlet {
 
     private User getUser(HttpServletRequest request) throws IOException, ServletException {
 
-
 	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
         " : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
@@ -83,7 +82,6 @@ public class SignUpServlet extends HttpServlet {
 
     private boolean isValid(User user, List<String> errorMessages) {
 
-
 	  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
         " : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
@@ -91,6 +89,7 @@ public class SignUpServlet extends HttpServlet {
         String account = user.getAccount();
         String password = user.getPassword();
         String email = user.getEmail();
+        User duplicateUser = new UserService().select(account);
 
         if (!StringUtils.isEmpty(name) && (20 < name.length())) {
             errorMessages.add("名前は20文字以下で入力してください");
@@ -100,12 +99,12 @@ public class SignUpServlet extends HttpServlet {
             errorMessages.add("アカウント名を入力してください");
         } else if (20 < account.length()) {
             errorMessages.add("アカウント名は20文字以下で入力してください");
-        }else {
-        	User findUser = new UserService().select(account);
-        	if(findUser != null) {
+        }
+
+        if(duplicateUser != null) {
         		errorMessages.add("すでに存在するアカウントです");
         	}
-        }
+
 
         if (StringUtils.isEmpty(password)) {
             errorMessages.add("パスワードを入力してください");
@@ -113,7 +112,7 @@ public class SignUpServlet extends HttpServlet {
 
         if (StringUtils.isEmpty(email)) {
 		errorMessages.add("メールアドレスを入力してください");
-	  } else if (!StringUtils.isEmpty(email) && (50 < email.length())) {
+		} else if (!StringUtils.isEmpty(email) && (50 < email.length())) {
             errorMessages.add("メールアドレスは50文字以下で入力してください");
         }
 

@@ -110,7 +110,7 @@ public class SettingServlet extends HttpServlet {
         String account = user.getAccount();
         String password = user.getPassword();
         String email = user.getEmail();
-        User loginUser = (User) session.getAttribute("loginUser");
+        User duplicateUser = new UserService().select(account);
 
         if (!StringUtils.isEmpty(name) && (20 < name.length())) {
         	errorMessages.add("名前は20文字以下で入力してください");
@@ -120,14 +120,14 @@ public class SettingServlet extends HttpServlet {
         	errorMessages.add("アカウント名を入力してください");
         } else if (20 < account.length()) {
         	errorMessages.add("アカウント名は20文字以下で入力してください");
-        } else {
-        	if(!account.equals(loginUser.getAccount())){
-        		User findUser = new UserService().select(account);
-        		if(findUser != null) {
-        			errorMessages.add("すでに存在するアカウントです");
-        		}
-        	}
         }
+
+        if(duplicateUser != null) {
+			if(duplicateUser.getId() != user.getId()) {
+        	errorMessages.add("すでに存在するアカウント名です");
+			}
+        }
+
 
         if (StringUtils.isEmpty(email)) {
         	errorMessages.add("メールアドレスを入力してください");
