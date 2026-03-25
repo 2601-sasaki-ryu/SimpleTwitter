@@ -65,7 +65,24 @@
                 		<span class="name"><c:out value="${message.name}" /></span>
         			</div>
             		<div class="text"><c:out value="${message.text}" /></div>
-            		<div class="date"><fmt:formatDate value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
+					<div class="date"><fmt:formatDate value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
+            		<c:if test="${ loginUser.id == message.userId }">
+						<div class="delete-area">
+							<form action="deleteMessage" method="post">
+								<input type="hidden" name="message_id" value="${message.id}">
+								<input type="submit" value="削除">
+							</form>
+					 	</div>
+					</c:if>
+					//画面イメージを参考に削除ボタンの次に編集ボタンを設定したい
+					<c:if test="${loginUser.id == message.Id }">
+						<div class="edit-area">
+							<form action="edit" method="post">
+								<input type="hidden" name=”message_id" value="${message.id}">
+								<inout type="submit" value="編集">
+							</form>
+						</div>
+					</c:if>
             	</div>
     		</c:forEach>
 		</div>

@@ -108,7 +108,6 @@ public class SettingServlet extends HttpServlet {
 
         String name = user.getName();
         String account = user.getAccount();
-        String password = user.getPassword();
         String email = user.getEmail();
         User duplicateUser = new UserService().select(account);
 

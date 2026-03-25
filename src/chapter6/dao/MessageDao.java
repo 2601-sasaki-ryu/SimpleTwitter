@@ -56,10 +56,29 @@ public class MessageDao {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-		log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+        	log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
             throw new SQLRuntimeException(e);
         } finally {
             close(ps);
         }
     }
+
+    public void delete(Connection connection, int id) {
+    	PreparedStatement ps = null;
+    	try {
+    		//idはDBのmessagestableに紐づいているprimarykey
+    		String sql = "DELETE FROM messages WHERE id = ?";
+
+    		ps = connection.prepareStatement(sql);
+    		ps.setInt(1, id);
+
+    		ps.executeUpdate();
+    	} catch (SQLException e) {
+    		log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+    		throw new SQLRuntimeException(e);
+    	} finally {
+    		close(ps);
+    	}
+    }
+
 }

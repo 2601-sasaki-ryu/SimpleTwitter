@@ -19,8 +19,6 @@ import chapter6.beans.User;
 import chapter6.logging.InitApplication;
 import chapter6.service.MessageService;
 
-
-
 @WebServlet(urlPatterns = { "/message" })
 public class MessageServlet extends HttpServlet {
 
@@ -39,7 +37,6 @@ public class MessageServlet extends HttpServlet {
         application.init();
 
     }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
