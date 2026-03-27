@@ -96,7 +96,7 @@ public class MessageDao {
 			ps.setInt(1, id);
 
 			ResultSet rs = ps.executeQuery();
-			Message message =null;
+			Message message = null;
 
 			while (rs.next()) {
 				message = new Message();
@@ -116,19 +116,19 @@ public class MessageDao {
 		}
 	}
 
-	public void update(Connection connection, int id, String text) {
+	public void update(Connection connection, Message message) {
 
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
 		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
 
 		PreparedStatement ps = null;
 		try {
-			String sql = "UPDATE messages SET text = ? WHERE id = ?";
+			String sql = "UPDATE messages SET text = ?, updated_date = CURRENT_TIMESTAMP WHERE id = ?";
 
 			ps = connection.prepareStatement(sql);
 
-			ps.setString(1, text);
-			ps.setInt(2, id);
+			ps.setString(1, message.getText());
+			ps.setInt(2, message.getId());
 
 			ps.executeUpdate();
 

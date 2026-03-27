@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -38,25 +39,29 @@ public class EditServlet extends HttpServlet {
 
 		String message = request.getParameter("message_id");
 		Message editMessage = null;
+		HttpSession session = request.getSession();
 
-		try {
+		if (StringUtils.isBlank(message) || !message.matches("^[0-9]+$")){
+			List<String> errorMessages = new ArrayList<String>();
+			errorMessages.add("不正なパラメータが入力されました");
+			session.setAttribute("errorMessages", errorMessages);
+			response.sendRedirect("./");
+			return;
+		}
 
-			if (message != null && !message.isEmpty()) {
-				int id = Integer.parseInt(message);
-				editMessage = new MessageService().select(id);
-			}
+		int id = Integer.parseInt(message);
+		editMessage = new MessageService().select(id);
 
-		}catch(NumberFormatException e) {
+		if (editMessage == null) {
+			List<String> errorMessages = new ArrayList<String>();
+		    errorMessages.add("不正なパラメータが入力されました");
+		    session.setAttribute("errorMessages", errorMessages);
+		    response.sendRedirect("./");
+		    return;
+		}
 
-			}if(editMessage == null) {
-				List<String> errorMessages = new ArrayList<String>();
-				errorMessages.add("不正なパラメータが入力されました");
-				request.getSession().setAttribute("errorMessages", errorMessages);
-				response.sendRedirect("./");
-				return;
-			}
-			request.setAttribute("editMessage", editMessage);
-			request.getRequestDispatcher("edit.jsp").forward(request, response);
+		request.setAttribute("editMessage", editMessage);
+		request.getRequestDispatcher("edit.jsp").forward(request, response);
 
 	}
 
@@ -71,26 +76,20 @@ public class EditServlet extends HttpServlet {
 		String text = request.getParameter("text");
 		List<String> errorMessages = new ArrayList<String>();
 
-		if (message == null || message.isEmpty()) {
-			errorMessages.add("不正なパラメータが入力されました");
-			request.getSession().setAttribute("errorMessages", errorMessages);
-			response.sendRedirect("./");
-			return;
-		}
+		Message editMessage = new Message();
+
 		int id = Integer.parseInt(message);
+		editMessage.setId(id);
+		editMessage.setText(text);
 
 		if (!isValid(text, errorMessages)) {
-			Message editMessage = new Message();
-			editMessage.setId(id);
-			editMessage.setText(text);
-
-	        request.setAttribute("errorMessages", errorMessages);
-	        request.setAttribute("editMessage", editMessage);
-	        request.getRequestDispatcher("edit.jsp").forward(request, response);
+			request.setAttribute("errorMessages", errorMessages);
+			request.setAttribute("editMessage", editMessage);
+			request.getRequestDispatcher("edit.jsp").forward(request, response);
 	        return;
 		}
 
-		new MessageService().update(id, text);
+		new MessageService().update(editMessage);
 		response.sendRedirect("./");
 	}
 
@@ -103,7 +102,7 @@ public class EditServlet extends HttpServlet {
 			errorMessages.add("メッセージを入力してください");
 		} else if (140 < text.length()) {
 			errorMessages.add("140文字以下で入力してください");
-			}
+		}
 
 		if (errorMessages.size() != 0) {
 			return false;

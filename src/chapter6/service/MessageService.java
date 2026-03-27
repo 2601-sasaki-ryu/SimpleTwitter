@@ -141,7 +141,7 @@ public class MessageService {
 
 	}
 
-	public void update(int id, String text) {
+	public void update(Message message) {
 
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
 		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
@@ -150,7 +150,7 @@ public class MessageService {
 		try {
 			connection = getConnection();
 
-			new MessageDao().update(connection, id, text);
+			new MessageDao().update(connection, message);
 
 			commit(connection);
 		} catch (RuntimeException e) {

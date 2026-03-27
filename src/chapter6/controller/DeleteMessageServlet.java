@@ -31,13 +31,11 @@ public class DeleteMessageServlet extends HttpServlet {
 		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
 		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
 
-		String message  = request.getParameter("message_id");
+		String message = request.getParameter("message_id");
 
-		if (message != null && !message.isEmpty()) {
-			int id = Integer.parseInt(message);
+		int id = Integer.parseInt(message);
 
-			new MessageService().delete(id);
-		}
+		new MessageService().delete(id);
 
 		response.sendRedirect("./");
 	}
