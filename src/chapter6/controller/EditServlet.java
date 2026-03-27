@@ -48,17 +48,16 @@ public class EditServlet extends HttpServlet {
 
 		}catch(NumberFormatException e) {
 
-		}
-			if(editMessage == null) {
-			List<String> errorMessages = new ArrayList<String>();
-			errorMessages.add("不正なパラメータが入力されました");
-			request.getSession().setAttribute("errorMessages", errorMessages);
-			response.sendRedirect("./");
-			return;
-		}
+			}if(editMessage == null) {
+				List<String> errorMessages = new ArrayList<String>();
+				errorMessages.add("不正なパラメータが入力されました");
+				request.getSession().setAttribute("errorMessages", errorMessages);
+				response.sendRedirect("./");
+				return;
+			}
+			request.setAttribute("editMessage", editMessage);
+			request.getRequestDispatcher("edit.jsp").forward(request, response);
 
-		request.setAttribute("editMessage", editMessage);
-		request.getRequestDispatcher("edit.jsp").forward(request, response);
 	}
 
 	@Override
@@ -97,19 +96,19 @@ public class EditServlet extends HttpServlet {
 
 	private boolean isValid(String text, List<String> errorMessages) {
 
-		  log.info(new Object(){}.getClass().getEnclosingClass().getName() +
-	        " : " + new Object(){}.getClass().getEnclosingMethod().getName());
+		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
+		" : " + new Object(){}.getClass().getEnclosingMethod().getName());
 
-	        if (StringUtils.isBlank(text)) {
-	            errorMessages.add("メッセージを入力してください");
-	        } else if (140 < text.length()) {
-	            errorMessages.add("140文字以下で入力してください");
-	        }
+		if (StringUtils.isBlank(text)) {
+			errorMessages.add("メッセージを入力してください");
+		} else if (140 < text.length()) {
+			errorMessages.add("140文字以下で入力してください");
+			}
 
-	        if (errorMessages.size() != 0) {
-	            return false;
-	        }
-	        return true;
-	    }
+		if (errorMessages.size() != 0) {
+			return false;
+		}
+		return true;
+	}
 
 }
