@@ -40,9 +40,9 @@ public class EditServlet extends HttpServlet {
 		String message = request.getParameter("message_id");
 		Message editMessage = null;
 		HttpSession session = request.getSession();
+		List<String> errorMessages = new ArrayList<String>();
 
 		if (StringUtils.isBlank(message) || !message.matches("^[0-9]+$")){
-			List<String> errorMessages = new ArrayList<String>();
 			errorMessages.add("不正なパラメータが入力されました");
 			session.setAttribute("errorMessages", errorMessages);
 			response.sendRedirect("./");
@@ -53,7 +53,6 @@ public class EditServlet extends HttpServlet {
 		editMessage = new MessageService().select(id);
 
 		if (editMessage == null) {
-			List<String> errorMessages = new ArrayList<String>();
 		    errorMessages.add("不正なパラメータが入力されました");
 		    session.setAttribute("errorMessages", errorMessages);
 		    response.sendRedirect("./");

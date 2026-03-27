@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -96,24 +98,43 @@ public class MessageDao {
 			ps.setInt(1, id);
 
 			ResultSet rs = ps.executeQuery();
-			Message message = null;
 
-			while (rs.next()) {
-				message = new Message();
-				message.setId(rs.getInt("id"));
-				message.setUserId(rs.getInt("user_id"));
-				message.setText(rs.getString("text"));
-				message.setCreatedDate(rs.getTimestamp("created_date"));
-				message.setUpdatedDate(rs.getTimestamp("updated_date"));
-        	}
-
-			return message;
+			List<Message> messages = toMessages(rs);
+			if (messages.isEmpty()) {
+				return null;
+			} else {
+				return messages.get(0);
+			}
 
 		} catch (SQLException e) {
 			throw new chapter6.exception.SQLRuntimeException(e);
 		} finally {
 			close(ps);
 		}
+	}
+
+	private List<Message> toMessages(ResultSet rs) throws SQLException {
+
+		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
+		" : " + new Object(){}.getClass().getEnclosingMethod().getName());
+
+		List<Message> messages = new ArrayList<Message>();
+		try {
+			while (rs.next()) {
+				Message message = new Message();
+				message.setId(rs.getInt("id"));
+				message.setUserId(rs.getInt("user_id"));
+				message.setText(rs.getString("text"));
+				message.setCreatedDate(rs.getTimestamp("created_date"));
+				message.setUpdatedDate(rs.getTimestamp("updated_date"));
+
+				messages.add(message);
+        	}
+			return messages;
+			} finally {
+				close(rs);
+			}
+
 	}
 
 	public void update(Connection connection, Message message) {
