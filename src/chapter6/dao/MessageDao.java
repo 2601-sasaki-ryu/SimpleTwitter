@@ -129,7 +129,7 @@ public class MessageDao {
 				message.setUpdatedDate(rs.getTimestamp("updated_date"));
 
 				messages.add(message);
-        }
+		}
 			return messages;
 		} finally {
 			close(rs);
