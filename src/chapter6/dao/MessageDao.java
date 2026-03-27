@@ -112,7 +112,7 @@ public class MessageDao {
 		} catch (SQLException e) {
 			throw new chapter6.exception.SQLRuntimeException(e);
 		} finally {
-			 close(ps);
+			close(ps);
 		}
 	}
 
@@ -135,7 +135,7 @@ public class MessageDao {
 		} catch (SQLException e) {
 			throw new chapter6.exception.SQLRuntimeException(e);
 		} finally {
-			 close(ps);
+			close(ps);
 		}
 	}
 }
