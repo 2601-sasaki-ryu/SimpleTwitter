@@ -85,7 +85,8 @@
             							<span class="comment-date"></span>
             						</div>
             						<div class="comment-footer">
-            							<fmt:formatDate value="${comment.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
+            							<fmt:formatDate value="${comment.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" />
+									</div>
             					</div>
             				</c:if>
             			</c:forEach>
