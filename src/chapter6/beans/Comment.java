@@ -5,22 +5,22 @@ import java.util.Date;
 
 public class Comment implements Serializable {
 
-    private int id;
-    private int userId;
-    private int messageId;
-    private String text;
-    private Date createdDate;
-    private Date updatedDate;
+	private int id;
+	private int userId;
+	private int messageId;
+	private String text;
+	private Date createdDate;
+	private Date updatedDate;
 
-    public int getId() {
+	public int getId() {
 		return id;
 	}
 
-    public void setId(int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-    public int getUserId() {
+	public int getUserId() {
 		return userId;
 	}
 
@@ -28,8 +28,8 @@ public class Comment implements Serializable {
 		this.userId = userId;
 	}
 
-		public int getMessageId() {
-			return messageId;
+	public int getMessageId() {
+		return messageId;
 	}
 
 	public void setMessageId(int messageId) {
@@ -60,4 +60,3 @@ public class Comment implements Serializable {
 		this.updatedDate = updatedDate;
 	}
 }
-

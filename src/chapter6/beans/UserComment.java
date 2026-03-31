@@ -16,6 +16,7 @@ public class UserComment implements Serializable {
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -68,4 +69,3 @@ public class UserComment implements Serializable {
 		this.createdDate = createdDate;
 	}
 }
-
