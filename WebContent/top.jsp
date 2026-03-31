@@ -63,12 +63,14 @@
     		<c:forEach items="${messages}" var="message">
         		<div class="message">
             		<div class="account-name">
-                		<span class="account">
-    						<a href="./?user_id=<c:out value="${message.userId}"/>">
-        						<c:out value="${message.account}"/>
-        					</a>
-						</span>
-                		@<span class="name"><c:out value="${message.name}" /></span>
+            			<span class="account">
+            				<a href="./?user_id=<c:out value="${message.userId}"/>">
+            					<c:out value="${message.account}"/>
+            				</a>
+            			</span>
+            			<span class="name">
+            				<c:out value="${message.name}" />
+            			</span>
         			</div>
             		<div class="text" style="white-space: pre-wrap;"><c:out value="${message.text}" /></div>
 					<div class="date"><fmt:formatDate value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
@@ -77,8 +79,8 @@
             				<c:if test="${comment.messageId == message.id}">
             					<div class="comment">
             						<div class="comment-header">
+            							<span class="account"><c:out value="${comment.account}" /></span>
             							<span class="name"><c:out value="${comment.name}" /></span>
-            							<span class="account">@<c:out value="${comment.account}" /></span>
             						</div>
             						<div class="comment-body">
             							<pre class="comment-text"><c:out value="${comment.text}" /></pre>
