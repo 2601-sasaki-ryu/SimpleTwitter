@@ -23,6 +23,13 @@
         			<a href="logout">ログアウト</a>
         		</c:if>
             </div>
+            <div class="filter-area">
+            	<form action="./" method="get">
+            		<input type="date" name="start_date" value="${startDate}">
+            		<input type="date" name="end_date" value="${endDate}">
+            		<input type="submit" value="絞込">
+            	</form>
+            </div>
 			<c:if test="${ not empty loginUser }">
     			<div class="profile">
         			<div class="name"><h2><c:out value="${loginUser.name}" /></h2></div>
@@ -34,13 +41,12 @@
     			<div class="errorMessages">
     				<ul>
         				<c:forEach items="${errorMessages}" var="errorMessage">
-        	        		<li><c:out value="${errorMessage}" />
+        	        		<li><c:out value="${errorMessage}" /></li>
         	    		</c:forEach>
         			</ul>
     			</div>
     			<c:remove var="errorMessages" scope="session" />
 			</c:if>
-
 			<div class="form-area">
 	    		<c:if test="${ isShowMessageForm }">
 	        		<form action="message" method="post">
@@ -62,10 +68,28 @@
         						<c:out value="${message.account}"/>
         					</a>
 						</span>
-                		<span class="name"><c:out value="${message.name}" /></span>
+                		@<span class="name"><c:out value="${message.name}" /></span>
         			</div>
             		<div class="text" style="white-space: pre-wrap;"><c:out value="${message.text}" /></div>
 					<div class="date"><fmt:formatDate value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
+            		<div class="comment-list">
+            			<c:forEach items="${comments}" var="comment">
+            				<c:if test="${comment.messageId == message.id}">
+            					<div class="comment">
+            						<div class="comment-header">
+            							<span class="name"><c:out value="${comment.name}" /></span>
+            							<span class="account">@<c:out value="${comment.account}" /></span>
+            						</div>
+            						<div class="comment-body">
+            							<pre class="comment-text"><c:out value="${comment.text}" /></pre>
+            							<span class="comment-date"></span>
+            						</div>
+            						<div class="comment-footer">
+            							<fmt:formatDate value="${comment.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" /></div>
+            					</div>
+            				</c:if>
+            			</c:forEach>
+            		</div>
             		<c:if test="${ loginUser.id == message.userId }">
 						<div class="delete-area">
 							<form action="deleteMessage" method="post">
@@ -77,6 +101,16 @@
 							<form action="edit" method="get">
 								<input type="hidden" name= "message_id" value="${message.id}">
 								<input type="submit" value="編集">
+							</form>
+						</div>
+					</c:if>
+					<c:if test="${ not empty loginUser }">
+						<div class="reply-area" style="margin-top: 10px;">
+							<form action="comment" method="post">
+								<input type="hidden" name="message_id" value="${message.id}">
+								<textarea name="text" cols="60" rows="2" class="reply-box"></textarea>
+								<br />
+								<input type="submit" value="返信">
 							</form>
 						</div>
 					</c:if>
