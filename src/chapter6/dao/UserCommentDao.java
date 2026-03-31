@@ -56,7 +56,7 @@ public class UserCommentDao {
 
 			ResultSet rs = ps.executeQuery();
 
-			List<UserComment> comments = toUserCommentList(rs);
+			List<UserComment> comments = toUserComments(rs);
 			return comments;
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, new Object(){}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
@@ -66,7 +66,7 @@ public class UserCommentDao {
 		}
 	}
 
-	private List<UserComment> toUserCommentList(ResultSet rs) throws SQLException {
+	private List<UserComment> toUserComments(ResultSet rs) throws SQLException {
 
 		log.info(new Object(){}.getClass().getEnclosingClass().getName() +
 		" : " + new Object(){}.getClass().getEnclosingMethod().getName());

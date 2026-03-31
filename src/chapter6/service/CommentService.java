@@ -61,8 +61,7 @@ public class CommentService {
 		Connection connection = null;
 		try {
 			connection = getConnection();
-			UserCommentDao userCommentDao = new UserCommentDao();
-			List<UserComment> comments = userCommentDao.select(connection);
+			List<UserComment> comments = new UserCommentDao().select(connection);
 			return comments;
 		} catch (RuntimeException e) {
 			log.log(Level.SEVERE, e.toString(), e);
